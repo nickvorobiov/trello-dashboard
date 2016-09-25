@@ -16,35 +16,37 @@ var states = [
     ids: ['pastdue']
   },
   {
-    name: 'Свежие лиды',     
-    color: '#0d0887', 
-    ids: ['569f823006dc53595355c866','57ab5914b419ce8b3eaa798c']
+    name: 'Свежие лиды',
+    ids: ['569f823006dc53595355c866', '57ab5914b419ce8b3eaa798c']
   },
   {
-    name: 'Дозваниваюсь',    
-    color: '#5c01a6', 
-    ids: ['56a5dcb3c2058bcc8d36f312','57ab5918b6ce1ee87dad2e4f']
+    name: 'Дозваниваюсь',
+    ids: ['56a5dcb3c2058bcc8d36f312', '57ab5918b6ce1ee87dad2e4f']
   },
   {
-    name: 'Утепляю',         
-    color: '#9c179e', 
+    name: 'Утепляю',
     ids: ['573304f2ffb312d29a156193']
   },
   {
-    name: 'В работе',        
-    color: '#cc4778', 
-    ids: ['56a5dcceb432ecf074681bca','57ab591c36e3767f77743e61']
+    name: 'В работе (созданы договорённости)',
+    ids: ['56a5dcceb432ecf074681bca', '57ab591c36e3767f77743e61']
   },
   {
-    name: 'Горячие',         
-    color: '#ed7953', 
-    ids: ['56a5dce071e24b113b761a98']
+    name: 'Да, очень болит, надо срочно решать!',
+    ids: ['57e12673dc80ed104be58df6', '57e129c1faf9e1ff0f298abb']
   },
   {
-    name: 'Внес предоплату',
-    color: '#fdb42f', 
-    ids: ['56fa7cce00d210716bde0476','57ab59251706c8148ebb31f6']
+    name: 'Вопросов нет, беру!',
+    ids: ['57e1268dfdecea6757dd6157', '57e129ef59ff08b157deb6bb']
   },
+  {
+    name: 'Создана договорённость о точной дате предоплаты',
+    ids: ['57e1269bb1f8b9624f69fd4b', '57e12a127d96f17f5775a3f5']
+  },
+  {
+    name: 'Внес предоплату - 90% Ждём наступления даты оплаты',
+    ids: ['56fa7cce00d210716bde0476', '57ab59251706c8148ebb31f6']
+  }
 ];
 
 var mindate = moment().subtract(90, 'days');
@@ -63,7 +65,11 @@ z1.domain(states.map(function(item, idx){
 }))
 
 z1.range(states.map(function(item, idx, arr){
-  return item.color;
+  var staticCount = 3; // no due, due, past due
+  if (idx < staticCount - 1) {
+    return item.color;
+  }
+  return d3.interpolatePlasma((idx - staticCount) / (arr.length - staticCount))
 }))
 
 var barHeight = 26;
